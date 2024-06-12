@@ -8,7 +8,7 @@
         public int QuantCopias { get; set; }
 
         public int RentCopy { get; set; }
-
+        // iai git
         public string? ReturnCopy { get; set; }
     }
 }
