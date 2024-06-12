@@ -1,0 +1,6 @@
+@Teste_conex_bd_HostAddress = http://localhost:5207
+
+GET {{Teste_conex_bd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
