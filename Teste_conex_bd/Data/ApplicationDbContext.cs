@@ -26,6 +26,10 @@ namespace Teste_conex_bd.Data
             modelBuilder.Entity<Diretor>()
                 .Property(d => d.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            modelBuilder.Entity<Diretor>()
+                .Property(d => d.Cd_situacao)
+                .HasDefaultValue(1);
         }
     }
 

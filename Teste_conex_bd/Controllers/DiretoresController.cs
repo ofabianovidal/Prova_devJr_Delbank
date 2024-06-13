@@ -25,7 +25,9 @@ namespace Teste_conex_bd.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Diretor>>> GetDiretores()
         {
-            return await _context.Diretores.ToListAsync();
+           // return await _context.Diretores.ToListAsync();
+            return await _context.Diretores.Where(d => d.Cd_situacao == 1).ToListAsync();
+
         }
 
         // GET: api/Diretores/5
@@ -34,7 +36,7 @@ namespace Teste_conex_bd.Controllers
         {
             var diretor = await _context.Diretores.FindAsync(id);
 
-            if (diretor == null)
+            if (diretor == null || diretor.Cd_situacao == 0)
             {
                 return NotFound();
             }
@@ -102,6 +104,23 @@ namespace Teste_conex_bd.Controllers
         }
 
         // DELETE: api/Diretores/5
+
+
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteDiretor(int id)
+        //{
+        //    var diretor = await _context.Diretores.FindAsync(id);
+        //    if (diretor == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _context.Diretores.Remove(diretor);
+        //    await _context.SaveChangesAsync();
+
+        //    return NoContent();
+        //}
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDiretor(int id)
         {
@@ -111,10 +130,23 @@ namespace Teste_conex_bd.Controllers
                 return NotFound();
             }
 
-            _context.Diretores.Remove(diretor);
+            diretor.Cd_situacao = 0; // Marcar como excluído
+            _context.Entry(diretor).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+
+
+
+
+
+        // GET: api/Diretores/Deletados
+        [HttpGet("Deletados")]
+        public async Task<ActionResult<IEnumerable<Diretor>>> GetDiretoresDeletados()
+        {
+            return await _context.Diretores.Where(d => d.Cd_situacao == 0).ToListAsync();
+        }
+
     }
 }
