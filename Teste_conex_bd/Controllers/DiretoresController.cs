@@ -131,6 +131,7 @@ namespace Teste_conex_bd.Controllers
             }
 
             diretor.Cd_situacao = 0; // Marcar como excluído
+            diretor.DeletedAt = DateTime.Now; // Atualizar data do delete
             _context.Entry(diretor).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
