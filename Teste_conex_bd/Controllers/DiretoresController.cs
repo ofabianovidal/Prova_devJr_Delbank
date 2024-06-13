@@ -46,7 +46,7 @@ namespace Teste_conex_bd.Controllers
         [HttpPost]
         public async Task<ActionResult<Diretor>> PostDiretor([FromBody] DiretorDto request)
         {
-            var diretor = new Diretor 
+            var diretor = new Diretor
             {
                 FirstName = request.FirstName,
                 Surname = request.Surname,
@@ -58,13 +58,22 @@ namespace Teste_conex_bd.Controllers
         }
 
         // PUT: api/Diretores/5
-        [HttpPut("{id}")] 
-        public async Task<IActionResult> PutDiretor(int id, Diretor diretor)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutDiretor(int id, [FromBody] DiretorDto request)
         {
-            if (id != diretor.Id)
+            if (!_context.Diretores.Any(d => d.Id == id))
             {
-                return BadRequest();
+                return NotFound();
             }
+
+            var diretor = await _context.Diretores.FindAsync(id);
+            if (diretor == null)
+            {
+                return NotFound();
+            }
+
+            diretor.FirstName = request.FirstName;
+            diretor.Surname = request.Surname;
 
             _context.Entry(diretor).State = EntityState.Modified;
 
@@ -87,6 +96,11 @@ namespace Teste_conex_bd.Controllers
             return NoContent();
         }
 
+        private bool DiretorExists(int id)
+        {
+            return _context.Diretores.Any(e => e.Id == id);
+        }
+
         // DELETE: api/Diretores/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDiretor(int id)
@@ -101,11 +115,6 @@ namespace Teste_conex_bd.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool DiretorExists(int id)
-        {
-            return _context.Diretores.Any(e => e.Id == id);
         }
     }
 }
