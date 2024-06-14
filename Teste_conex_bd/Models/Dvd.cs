@@ -12,7 +12,7 @@ namespace Teste_conex_bd.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public int RentCopy { get; set; } = 0;
-        public string? ReturnCopy { get; set; }
+        public int ReturnCopy { get; set; } = 0;
         public int DiretorId { get; set; } 
         public Diretor Diretor { get; set; }
         //public bool IsRented { get; set; } // Para gerenciar aluguéis

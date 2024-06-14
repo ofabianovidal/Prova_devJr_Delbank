@@ -357,7 +357,7 @@ namespace Teste_conex_bd.Controllers
                 return NotFound();
             }
 
-            if (dvd.QuantCopias < quantidade)
+            if (dvd.ReturnCopy > dvd.RentCopy)
             {
                 return BadRequest("Não há cópias suficientes para devolver.");
             }
