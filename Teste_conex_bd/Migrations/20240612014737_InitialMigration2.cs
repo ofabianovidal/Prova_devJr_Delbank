@@ -12,57 +12,57 @@ namespace Teste_conex_bd.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "titulo",
-                table: "Dvds",
+                table: "dvds",
                 newName: "Titulo");
 
             migrationBuilder.RenameColumn(
                 name: "returnCopy",
-                table: "Dvds",
+                table: "dvds",
                 newName: "ReturnCopy");
 
             migrationBuilder.RenameColumn(
                 name: "rentCopy",
-                table: "Dvds",
+                table: "dvds",
                 newName: "RentCopy");
 
             migrationBuilder.RenameColumn(
                 name: "quantCopias",
-                table: "Dvds",
+                table: "dvds",
                 newName: "QuantCopias");
 
             migrationBuilder.RenameColumn(
                 name: "genero",
-                table: "Dvds",
+                table: "dvds",
                 newName: "Genero");
 
             migrationBuilder.RenameColumn(
                 name: "dtPublicacao",
-                table: "Dvds",
+                table: "dvds",
                 newName: "DtPublicacao");
 
             migrationBuilder.RenameColumn(
                 name: "deletedAt",
-                table: "Dvds",
+                table: "dvds",
                 newName: "DeletedAt");
 
             migrationBuilder.RenameColumn(
                 name: "createdAt",
-                table: "Dvds",
+                table: "dvds",
                 newName: "CreatedAt");
 
             migrationBuilder.RenameColumn(
                 name: "cd_situacao",
-                table: "Dvds",
+                table: "dvds",
                 newName: "Cd_situacao");
 
             migrationBuilder.RenameColumn(
                 name: "cd_situacao",
-                table: "Diretores",
+                table: "diretores",
                 newName: "Cd_situacao");
 
             migrationBuilder.AlterColumn<string>(
                 name: "ReturnCopy",
-                table: "Dvds",
+                table: "dvds",
                 type: "longtext",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -74,57 +74,57 @@ namespace Teste_conex_bd.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "Titulo",
-                table: "Dvds",
+                table: "dvds",
                 newName: "titulo");
 
             migrationBuilder.RenameColumn(
                 name: "ReturnCopy",
-                table: "Dvds",
+                table: "dvds",
                 newName: "returnCopy");
 
             migrationBuilder.RenameColumn(
                 name: "RentCopy",
-                table: "Dvds",
+                table: "dvds",
                 newName: "rentCopy");
 
             migrationBuilder.RenameColumn(
                 name: "QuantCopias",
-                table: "Dvds",
+                table: "dvds",
                 newName: "quantCopias");
 
             migrationBuilder.RenameColumn(
                 name: "Genero",
-                table: "Dvds",
+                table: "dvds",
                 newName: "genero");
 
             migrationBuilder.RenameColumn(
                 name: "DtPublicacao",
-                table: "Dvds",
+                table: "dvds",
                 newName: "dtPublicacao");
 
             migrationBuilder.RenameColumn(
                 name: "DeletedAt",
-                table: "Dvds",
+                table: "dvds",
                 newName: "deletedAt");
 
             migrationBuilder.RenameColumn(
                 name: "CreatedAt",
-                table: "Dvds",
+                table: "dvds",
                 newName: "createdAt");
 
             migrationBuilder.RenameColumn(
                 name: "Cd_situacao",
-                table: "Dvds",
+                table: "dvds",
                 newName: "cd_situacao");
 
             migrationBuilder.RenameColumn(
                 name: "Cd_situacao",
-                table: "Diretores",
+                table: "diretores",
                 newName: "cd_situacao");
 
             migrationBuilder.AlterColumn<string>(
                 name: "returnCopy",
-                table: "Dvds",
+                table: "dvds",
                 type: "longtext",
                 nullable: false,
                 defaultValue: "",

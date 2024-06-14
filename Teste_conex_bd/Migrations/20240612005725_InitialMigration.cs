@@ -16,7 +16,7 @@ namespace Teste_conex_bd.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Diretores",
+                name: "diretores",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -28,12 +28,12 @@ namespace Teste_conex_bd.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Diretores", x => x.Id);
+                    table.PrimaryKey("PK_diretores", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Dvds",
+                name: "dvds",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -51,19 +51,19 @@ namespace Teste_conex_bd.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dvds", x => x.Id);
+                    table.PrimaryKey("PK_dvds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Dvds_Diretores_DiretorId",
+                        name: "FK_dvds_diretores_DiretorId",
                         column: x => x.DiretorId,
-                        principalTable: "Diretores",
+                        principalTable: "diretores",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Dvds_DiretorId",
-                table: "Dvds",
+                name: "IX_dvds_DiretorId",
+                table: "dvds",
                 column: "DiretorId");
         }
 
@@ -71,10 +71,10 @@ namespace Teste_conex_bd.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Dvds");
+                name: "dvds");
 
             migrationBuilder.DropTable(
-                name: "Diretores");
+                name: "diretores");
         }
     }
 }

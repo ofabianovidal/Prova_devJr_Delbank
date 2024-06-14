@@ -10,5 +10,7 @@
         public int RentCopy { get; set; }
         
         public string? ReturnCopy { get; set; }
+
+        public int DiretorId { get; set; }
     }
 }

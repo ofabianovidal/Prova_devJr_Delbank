@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Teste_conex_bd.Data;
 
@@ -10,9 +11,11 @@ using Teste_conex_bd.Data;
 namespace Teste_conex_bd.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240614000722_v1")]
+    partial class v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +49,7 @@ namespace Teste_conex_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("diretores");
+                    b.ToTable("Diretores");
                 });
 
             modelBuilder.Entity("Teste_conex_bd.Models.Dvd", b =>
@@ -93,13 +96,13 @@ namespace Teste_conex_bd.Migrations
 
                     b.HasIndex("DiretorId");
 
-                    b.ToTable("dvds");
+                    b.ToTable("Dvds");
                 });
 
             modelBuilder.Entity("Teste_conex_bd.Models.Dvd", b =>
                 {
                     b.HasOne("Teste_conex_bd.Models.Diretor", "Diretor")
-                        .WithMany("dvds")
+                        .WithMany("Dvds")
                         .HasForeignKey("DiretorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -109,7 +112,7 @@ namespace Teste_conex_bd.Migrations
 
             modelBuilder.Entity("Teste_conex_bd.Models.Diretor", b =>
                 {
-                    b.Navigation("dvds");
+                    b.Navigation("Dvds");
                 });
 #pragma warning restore 612, 618
         }

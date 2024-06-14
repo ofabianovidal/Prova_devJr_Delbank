@@ -12,7 +12,7 @@ namespace Teste_conex_bd.Migrations
         {
             migrationBuilder.AddColumn<int>(
                 name: "cd_situacao",
-                table: "Diretores",
+                table: "diretores",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
@@ -23,7 +23,7 @@ namespace Teste_conex_bd.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "cd_situacao",
-                table: "Diretores");
+                table: "diretores");
         }
     }
 }

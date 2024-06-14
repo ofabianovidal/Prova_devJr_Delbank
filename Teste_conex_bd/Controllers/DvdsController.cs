@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Teste_conex_bd.Dtos;
 
 namespace Teste_conex_bd.Controllers
 {
@@ -65,42 +66,59 @@ namespace Teste_conex_bd.Controllers
             return dvd;
         }
 
+
+
+
+
+
+
         // POST: api/Dvds
         [HttpPost]
-        public async Task<ActionResult<Dvd>> PostDvd([FromBody] Dvd dvd, string title, string genero, int quantidadeCopias, int alugarCopias, string devolverCopias)
+        public async Task<ActionResult<Dvd>> PostDvd([FromBody] DvdDto request)
         {
-            // Validações básicas
-            if (dvd == null || string.IsNullOrEmpty(title))
+            var dvd = new Dvd
             {
-                return BadRequest("Os dados do DVD e o título são obrigatórios.");
+
+                Titulo = request.Titulo,
+                Genero = request.Genero,
+                DtPublicacao = request.DtPublicacao,
+                QuantCopias = request.QuantCopias,
+                DiretorId = request.DiretorId,
+                RentCopy = request.RentCopy,
+                ReturnCopy = request.ReturnCopy,
+            };
+
+            // Validações básicas
+            if (dvd == null)
+            {
+                return BadRequest("Os dados do DVD são obrigatórios.");
             }
 
             // Verificar se o diretor existe
             var diretor = await _context.Diretores.FindAsync(dvd.DiretorId);
             if (diretor == null)
             {
-                diretor = new Diretor
-                {
-                    FirstName = dvd.Diretor.FirstName,
-                    Surname = dvd.Diretor.Surname,
-                    CreatedAt = DateTime.Now
-                };
-                _context.Diretores.Add(diretor);
-                await _context.SaveChangesAsync();
-                dvd.DiretorId = diretor.Id;
+                return BadRequest("É obrigatório ter um Diretor válido.");
             }
 
-            dvd.CreatedAt = DateTime.Now;
-            dvd.Titulo = title; // Atribui o título recebido ao DVD
-            dvd.Genero = genero; // Atribui o gênero recebido ao DVD
-            dvd.QuantCopias = quantidadeCopias; // Atribui a quantidade de cópias recebida ao DVD
-            dvd.RentCopy = alugarCopias; // Atribui a quantidade de cópias alugadas recebida ao DVD
-            dvd.ReturnCopy = devolverCopias; // Atribui a quantidade de cópias devolvidas recebida ao DVD
+            //dvd.CreatedAt = DateTime.Now;
+            //dvd.Titulo = Titulo; // Atribui o título recebido ao DVD
+            //dvd.Genero = Genero; // Atribui o gênero recebido ao DVD
+            //dvd.QuantCopias = quantidadeCopias; // Atribui a quantidade de cópias recebida ao DVD
+            //dvd.RentCopy = alugarCopias; // Atribui a quantidade de cópias alugadas recebida ao DVD
+            //dvd.ReturnCopy = devolverCopias; // Atribui a quantidade de cópias devolvidas recebida ao DVD
+            //_context.Dvds.Add(dvd);
+
             _context.Dvds.Add(dvd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetDvd), new { title = dvd.Titulo }, dvd);
+            //return CreatedAtAction(nameof(GetDvd), new { title = dvd.Titulo }, dvd);
+            return CreatedAtAction(nameof(GetDvd), new { dvd.Titulo }, dvd);
+
+
         }
+
+           
 
         // PUT: api/Dvds/{title}
         [HttpPut("{title}")]
@@ -163,6 +181,7 @@ namespace Teste_conex_bd.Controllers
 
             return NoContent();
         }
+
 
         // PUT: api/Dvds/{title}/AlugarCopias
         [HttpPut("{title}/AlugarCopias")]
