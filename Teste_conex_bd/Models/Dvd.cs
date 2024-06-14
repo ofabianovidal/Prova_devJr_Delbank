@@ -11,7 +11,7 @@ namespace Teste_conex_bd.Models
         public int QuantCopias { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-        public int? RentCopy { get; set; }
+        public int RentCopy { get; set; } = 0;
         public string? ReturnCopy { get; set; }
         public int DiretorId { get; set; } 
         public Diretor Diretor { get; set; }

@@ -130,7 +130,8 @@ namespace Teste_conex_bd.Controllers
                 return NotFound();
             }
 
-            diretor.Cd_situacao = 0; // Marcar como excluído
+            diretor.Cd_situacao = 0;// Marcar como excluído
+            diretor.DeletedAt = DateTime.Now;
             _context.Entry(diretor).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 

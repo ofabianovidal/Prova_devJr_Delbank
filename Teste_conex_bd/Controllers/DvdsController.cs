@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Teste_conex_bd.Dtos;
+using System.IO;
 
 namespace Teste_conex_bd.Controllers
 {
@@ -27,46 +28,92 @@ namespace Teste_conex_bd.Controllers
 
         // GET: api/Dvds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Dvd>>> GetDvds(string title)
+        public async Task<ActionResult<IEnumerable<Dvd>>> GetDvds()
         {
-            IQueryable<Dvd> dvds = _context.Dvds.Include(d => d.Diretor);
+            return await _context.Dvds.Where(d => d.Cd_situacao == 1).ToListAsync();
+            //IQueryable<Dvd> dvds = _context.Dvds.Include(d => d.Diretor);
 
-            // Filtro opcional por título
-            if (!string.IsNullOrEmpty(title))
-            {
-                dvds = dvds.Where(d => d.Titulo.Contains(title));
-            }
+            //// Filtro opcional por título
+            //if (!string.IsNullOrEmpty(title))
+            //{
+            //    dvds = dvds.Where(d => d.Titulo.Contains(title));
+            //}
 
-            return await dvds.ToListAsync();
+            //return await dvds.ToListAsync();
         }
+
+
+
 
         // GET: api/Dvds/{title}
-        [HttpGet("{title}")]
-        public async Task<ActionResult<Dvd>> GetDvd(string title)
+        //[HttpGet("{title}")]
+        //public async Task<ActionResult<Dvd>> GetDvd(string title)
+        //{
+        //    if (string.IsNullOrEmpty(title))
+        //    {
+        //        return BadRequest("O título é obrigatório.");
+        //    }
+
+        //    if (_cache.TryGetValue(DvdCacheKey + title, out Dvd Dvd))
+        //    {
+        //        return Dvd;
+        //    }
+
+        //    Dvd = await _context.Dvds.Include(d => d.Diretor).FirstOrDefaultAsync(d => d.Titulo == title);
+
+        //    if (Dvd == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _cache.Set(DvdCacheKey + title, Dvd);
+
+        //    return NotFound("body");
+        //}
+
+
+
+
+        // GET: api/Dvds/{id}
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Dvd>> GetDvd(int id)
         {
-            //if (string.IsNullOrEmpty(title))
-            //{
-            //    return BadRequest("O título é obrigatório.");
-            //}
+            var dvd = await _context.Dvds.FindAsync(id);
 
-            //if (_cache.TryGetValue(DvdCacheKey + title, out Dvd dvd))
-            //{
-            //    return dvd;
-            //}
+            if (dvd == null || dvd.Cd_situacao == 0)
+            {
+                return NotFound();
+            }
 
-            //dvd = await _context.Dvds.Include(d => d.Diretor).FirstOrDefaultAsync(d => d.Titulo == title);
-
-            //if (dvd == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //_cache.Set(DvdCacheKey + title, dvd);
-
-            return NotFound("body");
+            return dvd;
         }
 
 
+        //    [HttpGet("{title}")]
+        //public async Task<ActionResult<Dvd>> GetDvd(string title)
+        //{
+        //    if (string.IsNullOrEmpty(title))
+        //    {
+        //        return BadRequest("O título é obrigatório.");
+        //    }
+
+        //    if (_cache.TryGetValue(DvdCacheKey + title, out Dvd dvd))
+        //    {
+        //        return dvd;
+        //    }
+
+        //    dvd = await _context.Dvds.Include(d => d.Diretor).FirstOrDefaultAsync(d => d.Titulo == title);
+
+        //    if (dvd == null || dvd.Cd_situacao == 0)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _cache.Set(DvdCacheKey + title, dvd);
+
+        //    return dvd;
+        //}
 
 
 
@@ -83,7 +130,8 @@ namespace Teste_conex_bd.Controllers
                 Genero = request.Genero,
                 DtPublicacao = request.DtPublicacao,
                 QuantCopias = request.QuantCopias,
-                DiretorId = request.DiretorId
+                DiretorId = request.DiretorId,
+                RentCopy = 0
             };
 
             // Validações básicas
@@ -111,39 +159,44 @@ namespace Teste_conex_bd.Controllers
             await _context.SaveChangesAsync();
 
             //return CreatedAtAction(nameof(GetDvd), new { title = dvd.Titulo }, dvd);
-            return CreatedAtAction(nameof(GetDvd), new { title = dvd.Titulo }, dvd);
+            return CreatedAtAction(nameof(GetDvd), new { id = dvd.Id }, dvd);
            
 
 
         }
 
-           
 
-        // PUT: api/Dvds/{title}
-        [HttpPut("{title}")]
-        public async Task<IActionResult> PutDvd(string title, Dvd dvd)
+
+        // PUT: api/Dvds/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutDvd(int id, [FromBody] DvdDto request)
         {
-            if (string.IsNullOrEmpty(title) || title != dvd.Titulo)
+            if (!_context.Dvds.Any(d => d.Id == id))
             {
-                return BadRequest("O título é obrigatório e deve corresponder ao título do DVD.");
+                return NotFound();
             }
 
-            // Validações básicas
-            if (string.IsNullOrEmpty(dvd.Titulo))
+            var dvd = await _context.Dvds.FindAsync(id);
+            if (dvd == null)
             {
-                return BadRequest("O título é obrigatório.");
+                return NotFound();
             }
+
+            dvd.Titulo = request.Titulo;
+            dvd.Genero = request.Genero;
+            dvd.DtPublicacao = request.DtPublicacao;
+            dvd.QuantCopias = request.QuantCopias;
+            dvd.DiretorId = request.DiretorId;
 
             _context.Entry(dvd).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
-                _cache.Remove(DvdCacheKey + title);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DvdExists(title))
+                if (!DvdExists(id))
                 {
                     return NotFound();
                 }
@@ -156,42 +209,118 @@ namespace Teste_conex_bd.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Dvds/{title}
-        [HttpDelete("{title}")]
-        public async Task<IActionResult> DeleteDvd(string title)
+        private bool DvdExists(int id)
         {
-            if (string.IsNullOrEmpty(title))
-            {
-                return BadRequest("O título é obrigatório.");
-            }
+            throw new NotImplementedException();
+        }
 
-            var dvd = await _context.Dvds.FirstOrDefaultAsync(d => d.Titulo == title);
+
+
+
+
+        //[HttpPut("{title}")]
+        //public async Task<IActionResult> PutDvd(string title, Dvd dvd)
+        //{
+        //    if (string.IsNullOrEmpty(title) || title != dvd.Titulo)
+        //    {
+        //        return BadRequest("O título é obrigatório e deve corresponder ao título do DVD.");
+        //    }
+
+        //    // Validações básicas
+        //    if (string.IsNullOrEmpty(dvd.Titulo))
+        //    {
+        //        return BadRequest("O título é obrigatório.");
+        //    }
+
+        //    _context.Entry(dvd).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //        _cache.Remove(DvdCacheKey + title);
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!DvdExists(title))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return NoContent();
+        //}
+
+
+
+        //// DELETE: api/Dvds/{title}
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteDvd(int id)
+        //{
+        //    if (int.IsNullOrEmpty(id))
+        //    {
+        //        return BadRequest("O id é obrigatório.");
+        //    }
+
+        //    var dvd = await _context.Dvds.FirstOrDefaultAsync(d => d.Id == id);
+        //    if (dvd == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // Marcando como excluído (em vez de deletar do banco de dados)
+        //    dvd.DeletedAt = DateTime.Now;
+        //    dvd.Cd_situacao = 0;
+        //    _context.Entry(dvd).State = EntityState.Modified;
+        //    await _context.SaveChangesAsync();
+        //    _cache.Remove(DvdCacheKey + id);
+
+        //    return NoContent();
+        //}
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Dvd(int id)
+        {
+            var dvd = await _context.Dvds.FindAsync(id);
             if (dvd == null)
             {
                 return NotFound();
             }
 
-            // Marcando como excluído (em vez de deletar do banco de dados)
+            dvd.Cd_situacao = 0;// Marcar como excluído
             dvd.DeletedAt = DateTime.Now;
-            dvd.Cd_situacao = 0;
             _context.Entry(dvd).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            _cache.Remove(DvdCacheKey + title);
 
             return NoContent();
         }
 
 
-        // PUT: api/Dvds/{title}/AlugarCopias
-        [HttpPut("{title}/AlugarCopias")]
-        public async Task<IActionResult> AlugarCopias(string title, int quantidade)
+
+        // GET: api/Dvds/Deletados
+        [HttpGet("Deletados")]
+        public async Task<ActionResult<IEnumerable<Dvd>>> GetDvdsDeletados()
         {
-            if (string.IsNullOrEmpty(title))
+            return await _context.Dvds.Where(d => d.Cd_situacao == 0).ToListAsync();
+        }
+
+
+
+        
+        // PUT: api/Dvds/{id}/AlugarCopias
+        [HttpPut("{id}/AlugarCopias")]
+        public async Task<IActionResult> AlugarCopias(int id, [FromQuery] int quantidade)
+        {
+            if (id <= 0)
             {
-                return BadRequest("O título é obrigatório.");
+                return BadRequest("O id é obrigatório.");
             }
 
-            var dvd = await _context.Dvds.FirstOrDefaultAsync(d => d.Titulo == title);
+            var dvd = await _context.Dvds.FirstOrDefaultAsync(d => d.Id == id);
             if (dvd == null)
             {
                 return NotFound();
@@ -204,47 +333,43 @@ namespace Teste_conex_bd.Controllers
 
             dvd.QuantCopias -= quantidade;
             dvd.RentCopy += quantidade;
-            dvd.ReturnCopy = "Rented";
+            
             _context.Entry(dvd).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            _cache.Remove(DvdCacheKey + title);
+            _cache.Remove(DvdCacheKey + id); // Certifique-se de que a chave do cache está correta
 
             return NoContent();
         }
 
-        // PUT: api/Dvds/{title}/DevolverCopias
-        [HttpPut("{title}/DevolverCopias")]
-        public async Task<IActionResult> DevolverCopias(string title, int quantidade)
+
+        // PUT: api/Dvds/{id}/DevolverCopias
+        [HttpPut("{id}/DevolverCopias")]
+        public async Task<IActionResult> DevolverCopias(int id, [FromQuery] int quantidade)
         {
-            if (string.IsNullOrEmpty(title))
+            if (id <= 0)
             {
-                return BadRequest("O título é obrigatório.");
+                return BadRequest("O id é obrigatório.");
             }
 
-            var dvd = await _context.Dvds.FirstOrDefaultAsync(d => d.Titulo == title);
+            var dvd = await _context.Dvds.FirstOrDefaultAsync(d => d.Id == id);
             if (dvd == null)
             {
                 return NotFound();
             }
 
-            if (dvd.RentCopy < quantidade)
+            if (dvd.QuantCopias < quantidade)
             {
-                return BadRequest("A quantidade de cópias a devolver é maior do que as cópias alugadas.");
+                return BadRequest("Não há cópias suficientes para devolver.");
             }
 
             dvd.QuantCopias += quantidade;
             dvd.RentCopy -= quantidade;
-            dvd.ReturnCopy = "Returned";
+
             _context.Entry(dvd).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            _cache.Remove(DvdCacheKey + title);
+            _cache.Remove(DvdCacheKey + id); // Certifique-se de que a chave do cache está correta
 
             return NoContent();
-        }
-
-        private bool DvdExists(string title)
-        {
-            return _context.Dvds.Any(d => d.Titulo == title);
         }
     }
 }
