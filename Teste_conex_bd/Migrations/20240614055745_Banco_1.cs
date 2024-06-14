@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Teste_conex_bd.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Banco_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace Teste_conex_bd.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "diretores",
+                name: "Diretores",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -24,46 +24,47 @@ namespace Teste_conex_bd.Migrations
                     FirstName = table.Column<string>(type: "longtext", nullable: true),
                     Surname = table.Column<string>(type: "longtext", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    DeletedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    DeletedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Cd_situacao = table.Column<int>(type: "int", nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_diretores", x => x.Id);
+                    table.PrimaryKey("PK_Diretores", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "dvds",
+                name: "Dvds",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    titulo = table.Column<string>(type: "longtext", nullable: false),
-                    genero = table.Column<string>(type: "longtext", nullable: false),
-                    dtPublicacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    quantCopias = table.Column<int>(type: "int", nullable: false),
-                    createdAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    deletedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    rentCopy = table.Column<int>(type: "int", nullable: false),
-                    returnCopy = table.Column<string>(type: "longtext", nullable: false),
+                    Titulo = table.Column<string>(type: "longtext", nullable: false),
+                    Genero = table.Column<string>(type: "longtext", nullable: false),
+                    DtPublicacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    QuantCopias = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    DeletedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    RentCopy = table.Column<int>(type: "int", nullable: true),
+                    ReturnCopy = table.Column<string>(type: "longtext", nullable: true),
                     DiretorId = table.Column<int>(type: "int", nullable: false),
-                    cd_situacao = table.Column<int>(type: "int", nullable: false)
+                    Cd_situacao = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_dvds", x => x.Id);
+                    table.PrimaryKey("PK_Dvds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_dvds_diretores_DiretorId",
+                        name: "FK_Dvds_Diretores_DiretorId",
                         column: x => x.DiretorId,
-                        principalTable: "diretores",
+                        principalTable: "Diretores",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_dvds_DiretorId",
-                table: "dvds",
+                name: "IX_Dvds_DiretorId",
+                table: "Dvds",
                 column: "DiretorId");
         }
 
@@ -71,10 +72,10 @@ namespace Teste_conex_bd.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "dvds");
+                name: "Dvds");
 
             migrationBuilder.DropTable(
-                name: "diretores");
+                name: "Diretores");
         }
     }
 }

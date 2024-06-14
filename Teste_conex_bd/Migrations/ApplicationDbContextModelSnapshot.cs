@@ -46,7 +46,7 @@ namespace Teste_conex_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("diretores");
+                    b.ToTable("Diretores");
                 });
 
             modelBuilder.Entity("Teste_conex_bd.Models.Dvd", b =>
@@ -93,13 +93,13 @@ namespace Teste_conex_bd.Migrations
 
                     b.HasIndex("DiretorId");
 
-                    b.ToTable("dvds");
+                    b.ToTable("Dvds");
                 });
 
             modelBuilder.Entity("Teste_conex_bd.Models.Dvd", b =>
                 {
                     b.HasOne("Teste_conex_bd.Models.Diretor", "Diretor")
-                        .WithMany("dvds")
+                        .WithMany("Dvds")
                         .HasForeignKey("DiretorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -109,7 +109,7 @@ namespace Teste_conex_bd.Migrations
 
             modelBuilder.Entity("Teste_conex_bd.Models.Diretor", b =>
                 {
-                    b.Navigation("dvds");
+                    b.Navigation("Dvds");
                 });
 #pragma warning restore 612, 618
         }

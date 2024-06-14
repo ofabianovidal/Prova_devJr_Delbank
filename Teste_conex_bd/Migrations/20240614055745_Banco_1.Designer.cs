@@ -11,8 +11,8 @@ using Teste_conex_bd.Data;
 namespace Teste_conex_bd.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240612014737_InitialMigration2")]
-    partial class InitialMigration2
+    [Migration("20240614055745_Banco_1")]
+    partial class Banco_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,9 @@ namespace Teste_conex_bd.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Cd_situacao")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -80,7 +82,7 @@ namespace Teste_conex_bd.Migrations
                     b.Property<int>("QuantCopias")
                         .HasColumnType("int");
 
-                    b.Property<int>("RentCopy")
+                    b.Property<int?>("RentCopy")
                         .HasColumnType("int");
 
                     b.Property<string>("ReturnCopy")

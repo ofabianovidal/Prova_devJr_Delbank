@@ -7,9 +7,9 @@
         public DateTime DtPublicacao { get; set; }
         public int QuantCopias { get; set; }
 
-        public int RentCopy { get; set; }
+       // public int RentCopy { get; set; }
         
-        public string? ReturnCopy { get; set; }
+        //public string? ReturnCopy { get; set; }
 
         public int DiretorId { get; set; }
     }

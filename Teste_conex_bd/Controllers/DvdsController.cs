@@ -44,26 +44,26 @@ namespace Teste_conex_bd.Controllers
         [HttpGet("{title}")]
         public async Task<ActionResult<Dvd>> GetDvd(string title)
         {
-            if (string.IsNullOrEmpty(title))
-            {
-                return BadRequest("O título é obrigatório.");
-            }
+            //if (string.IsNullOrEmpty(title))
+            //{
+            //    return BadRequest("O título é obrigatório.");
+            //}
 
-            if (_cache.TryGetValue(DvdCacheKey + title, out Dvd dvd))
-            {
-                return dvd;
-            }
+            //if (_cache.TryGetValue(DvdCacheKey + title, out Dvd dvd))
+            //{
+            //    return dvd;
+            //}
 
-            dvd = await _context.Dvds.Include(d => d.Diretor).FirstOrDefaultAsync(d => d.Titulo == title);
+            //dvd = await _context.Dvds.Include(d => d.Diretor).FirstOrDefaultAsync(d => d.Titulo == title);
 
-            if (dvd == null)
-            {
-                return NotFound();
-            }
+            //if (dvd == null)
+            //{
+            //    return NotFound();
+            //}
 
-            _cache.Set(DvdCacheKey + title, dvd);
+            //_cache.Set(DvdCacheKey + title, dvd);
 
-            return dvd;
+            return NotFound("body");
         }
 
 
@@ -83,9 +83,7 @@ namespace Teste_conex_bd.Controllers
                 Genero = request.Genero,
                 DtPublicacao = request.DtPublicacao,
                 QuantCopias = request.QuantCopias,
-                DiretorId = request.DiretorId,
-                RentCopy = request.RentCopy,
-                ReturnCopy = request.ReturnCopy,
+                DiretorId = request.DiretorId
             };
 
             // Validações básicas
@@ -113,7 +111,8 @@ namespace Teste_conex_bd.Controllers
             await _context.SaveChangesAsync();
 
             //return CreatedAtAction(nameof(GetDvd), new { title = dvd.Titulo }, dvd);
-            return CreatedAtAction(nameof(GetDvd), new { dvd.Titulo }, dvd);
+            return CreatedAtAction(nameof(GetDvd), new { title = dvd.Titulo }, dvd);
+           
 
 
         }
