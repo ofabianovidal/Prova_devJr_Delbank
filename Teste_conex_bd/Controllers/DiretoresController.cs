@@ -104,23 +104,6 @@ namespace Teste_conex_bd.Controllers
         }
 
         // DELETE: api/Diretores/5
-
-
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteDiretor(int id)
-        //{
-        //    var diretor = await _context.Diretores.FindAsync(id);
-        //    if (diretor == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Diretores.Remove(diretor);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDiretor(int id)
         {

@@ -31,18 +31,8 @@ namespace Teste_conex_bd.Controllers
         public async Task<ActionResult<IEnumerable<Dvd>>> GetDvds()
         {
             return await _context.Dvds.Where(d => d.Cd_situacao == 1).ToListAsync();
-            //IQueryable<Dvd> dvds = _context.Dvds.Include(d => d.Diretor);
-
-            //// Filtro opcional por título
-            //if (!string.IsNullOrEmpty(title))
-            //{
-            //    dvds = dvds.Where(d => d.Titulo.Contains(title));
-            //}
-
-            //return await dvds.ToListAsync();
+            
         }
-
-
 
 
         // GET: api/Dvds/{title}
@@ -73,7 +63,6 @@ namespace Teste_conex_bd.Controllers
 
 
 
-
         // GET: api/Dvds/{id}
 
         [HttpGet("{id}")]
@@ -88,33 +77,6 @@ namespace Teste_conex_bd.Controllers
 
             return dvd;
         }
-
-
-        //    [HttpGet("{title}")]
-        //public async Task<ActionResult<Dvd>> GetDvd(string title)
-        //{
-        //    if (string.IsNullOrEmpty(title))
-        //    {
-        //        return BadRequest("O título é obrigatório.");
-        //    }
-
-        //    if (_cache.TryGetValue(DvdCacheKey + title, out Dvd dvd))
-        //    {
-        //        return dvd;
-        //    }
-
-        //    dvd = await _context.Dvds.Include(d => d.Diretor).FirstOrDefaultAsync(d => d.Titulo == title);
-
-        //    if (dvd == null || dvd.Cd_situacao == 0)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _cache.Set(DvdCacheKey + title, dvd);
-
-        //    return dvd;
-        //}
-
 
 
 
